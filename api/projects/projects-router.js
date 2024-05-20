@@ -12,36 +12,36 @@ const router = express.Router()
 
 
 router.get('/api/projects', (req, res, next) => {
-    Projects.get()
-            .then(projects => {
-                res.json(projects)
+    console.log(Projects)
+})
+
+
+router.get('/api/projects/:id', validateProjectId, (req, res) => {
+    res.json(req.user)
+})
+
+
+router.post('/api/projects', validateProject, (req, res, next) => {
+    Projects.insert({ name: req.name})
+            .then(newProject => {
+                res.status(201).json(newProject)
             })
             .catch(next)
 })
 
 
-router.get('/api/projects/:id', validateProjectId, (req, res) => {
-    res.json(req.projects)
+router.put('/api/projects/:id', validateProjectId, validateProject, (req, res, next) => {
+    console.log(req.user)
 })
 
 
-router.post('/api/projects', validateProject, (req, res, next) => {
-   
+router.delete('/api/projects/:id', validateProjectId, (req, res, next) => {
+    console.log(req.user)
 })
 
 
-router.put('/api/projects/:id', (req, res, next) => {
-
-})
-
-
-router.delete('/api/projects/:id', (req, res, next) => {
-
-})
-
-
-router.get('/api/projects/:id/actions', (req, res, next) => {
-
+router.get('/api/projects/:id/actions', validateProjectId, (req, res, next) => {
+    console.log(req.user)
 })
 
 
@@ -54,5 +54,5 @@ router.use((err, req, res, next) => {
 })
 
 
-module.exports = router
+module.exports = router;
 
