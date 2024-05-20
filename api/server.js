@@ -10,10 +10,11 @@ const projectsRouter = require('./projects/projects-router')
 // Do NOT `server.listen()` inside this file!
 
 
-server.use('*', (req, res) => {
-    res.status(404).json({
-        message: 'not found'
-    }) 
+server.use('/api/actions', actionsRouter)
+server.use('/api/projects', projectsRouter)
+
+server.get('/', (req, res) => {
+    res.send(`<h2>Let's complete this Challenge!</h2>`)
 })
 
 module.exports = server;
