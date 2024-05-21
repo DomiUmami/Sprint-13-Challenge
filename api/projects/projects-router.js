@@ -54,7 +54,7 @@ router.put('/:id', async (req, res) => {
       try {
         const updatedProject = await Projects.update(req.params.id, req.body);
         if (updatedProject) {
-          res.status(200).json(updatedProject);
+          res.status(400).json(updatedProject);
         } else {
           res.status(404).json({ message: 'Project not found' });
         }
