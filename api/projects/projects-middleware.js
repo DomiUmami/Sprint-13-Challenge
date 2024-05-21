@@ -1,25 +1,19 @@
-// add middlewares here related to projects
-const Projects = require('../projects/projects-model')
+const Projects = require('../projects/projects-model');
 
-function logger(req, res, next){
-    console.log('logger middleware')
-    next()
+async function validateProjectId(req, res, next) {
+  try {
+    const project = await Projects.get(req.params.id);
+    if (project) {
+      req.project = project;
+      next();
+    } else {
+      res.status(404).json({ message: 'Project not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving project' });
+  }
 }
 
+module.exports = validateProjectId;
 
-function validateProjectId(req, res, next){
-   console.log('validateProjectId middleware')
-   next()
-}
-
-function validateProject(req, res, next){
-    console.log('validateProject middleware')
-    next()
-}
-
-module.exports = {
-    logger,
-    validateProjectId,
-    validateProject,
-}
 

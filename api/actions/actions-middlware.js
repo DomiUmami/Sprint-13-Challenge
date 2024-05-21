@@ -1,23 +1,14 @@
-// add middlewares here related to actions
-const Actions = require('./actions/actions-model')
-
-function validateActions(req, res, next){
-    const { action } = req.body
-    if (!action || !action.trim()){
-        res.status(400).json({
-            message: 'missing required action field'
-        })
+function validateActionFields(req, res, next) {
+    const { project_id, description, notes } = req.body;
+    if (!project_id || !description || !notes) {
+      res.status(400).json({ message: 'Project ID, description, and notes are required' });
     } else {
-        req.action = action.trim()
-        next()
+      next();
     }
-}
-
-module.exports = {
-    validateActions,
-
-}
-
+  }
+  
+  module.exports = validateActionFields;
+  
 
 
 
