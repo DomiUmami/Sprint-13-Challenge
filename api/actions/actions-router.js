@@ -3,8 +3,9 @@ const express = require('express')
 
 const Actions = require('../actions/actions-model')
 
-const validateActionFields = require('../actions/actions-middlware')
+const Projects = require('../projects/projects-model');
 
+const validateActionFields = require('../actions/actions-middlware')
 
 const router = express.Router()
 
@@ -34,23 +35,20 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', validateActionFields, async (req, res) => {
-    const { project_id, description, notes } = req.body;
-    if (!project_id || !description || !notes) {
-      res.status(400).json({ message: 'Project ID, description, and notes are required' });
-    } else {
-      try {
-        const project = await Projects.get(project_id);
-        if (project) {
-          const newAction = await Actions.insert(req.body);
-          res.status(201).json(newAction);
-        } else {
-          res.status(400).json({ message: 'Invalid project ID' });
-        }
-      } catch (err) {
-        res.status(500).json({ message: 'Error creating action' });
+    const { project_id } = req.body;
+  
+    try {
+      const project = await Projects.get(project_id);
+      if (!project) {
+        return res.status(400).json({ message: 'Invalid project ID' });
       }
-    } 
-})
+  
+      const newAction = await Actions.insert(req.body);
+      res.status(201).json(newAction);
+    } catch (err) {
+      res.status(500).json({ message: 'Error creating action' });
+    }
+  })
 
 
 router.put('/:id', async (req, res) => {
